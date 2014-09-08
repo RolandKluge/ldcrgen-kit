@@ -1,0 +1,33 @@
+# Start using scientific notation at 1E5
+options(scipen=6)
+
+t1 = read.table("../test_series_d_in_const_all_dyn_DInOut10_5_hashmap.data")
+t1_grouped = aggregate(V5 ~ V1, data = t1, FUN = mean)
+t2 = read.table("../test_series_d_in_const_all_dyn_DInOut10_5_treemap.data")
+t2_grouped = aggregate(V5 ~ V1, data = t2, FUN = mean)
+t3 = read.table("../test_series_d_in_const_all_dyn_DInOut3_1_hashmap.data")
+t3_grouped = aggregate(V5 ~ V1, data = t3, FUN = mean)
+t4 = read.table("../test_series_d_in_const_all_dyn_DInOut3_1_treemap.data")
+t4_grouped = aggregate(V5 ~ V1, data = t4, FUN = mean)
+
+
+
+pdf(paste("test_series_d_in_const_all_dyn_cr.pdf",sep=""),width=2.8,height=2.5)
+par(mar=c(3.2, 3, 0.5, 0.5))
+par(mgp=c(2, 0.5, 0))
+par(cex=0.7)
+
+plot(t2_grouped,xlab="number of nodes",ylab="time[s]", ylim=c(0,25), type="b", col="red")
+#c <- coefficients(lm(formula = sqrt(t1_grouped$V2) ~ t1_grouped$V1))
+#curve(c[1]*c[1] + x*x*c[2]*c[2] + 2*c[2]*c[1]*x,add=TRUE,col="red")
+
+lines(t1_grouped,pch=8,type="b",col="blue")
+#c <- coefficients(lm(formula = sqrt(t2_grouped$V2) ~ t2_grouped$V1))
+#curve(c[1]*c[1] + x*x*c[2]*c[2] + 2*c[2]*c[1]*x,add=TRUE,col="red")
+
+lines(t3_grouped,pch=2, type="b",col="green")
+lines(t4_grouped,pch=3, type="b",col="black")
+#c <- coefficients(lm(formula = sqrt(t3_grouped$V2) ~ t3_grouped$V1))
+#curve(c[1]*c[1] + x*x*c[2]*c[2] + 2*c[2]*c[1]*x,add=TRUE,col="red")
+legend("topleft",c("di=10,dx=5,treemap", "di=10,dx=5,hashmap", "di=3,dx=1,treemap", "di=3,dx=1,hashmap"), pch=c(1,8,3,2), col=c("red", "blue", "black","green"))
+dev.off()

@@ -1,0 +1,1 @@
+-v -g n=42 p_in=0.9999 k=4 p_out=0.01 t_max=97 p_chi=0.1111 p_nu=0.2111 p_omega=0.3111 p_mu=0.4111 theta=0.801 beta=1.011 p_in_new=mean dir=./ output=test_outfile beta=2 eta=2

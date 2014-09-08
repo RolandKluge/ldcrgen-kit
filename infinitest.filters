@@ -1,0 +1,5 @@
+Performance tests
+.*PerformanceTest.*
+
+Random tests
+.*RandomTest.*

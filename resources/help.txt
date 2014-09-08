@@ -1,0 +1,178 @@
+Usage:
+
+	java -jar ldcrgen.jar <options>
+or
+	./ldcrgen.sh <options>
+	
+The options are divided into so-called 'top level arguments' and
+configuration parameters for the generator.
+Only the top level arguments always start with a hyphen ('-').
+
+Note that the options may be empty. In this cases the generator will
+use reasonable default values which can be retrieved by means of the
+'-defaults' parameter.
+
+The available top level arguments are:
+
+-h			
+	print this help message
+	
+-v			
+	enables verbose output. A few information will be printed such as
+	the starting and finishing time.
+	
+-vv 
+	enables more verbose output. The generator gives progress information
+	and statistics are printed at the end of the generation process.
+	
+-vvv
+	enables even more verbose output with each operation being printed.
+	Useful for debugging purpose.
+	
+	
+-l	
+	enables logging. A log file with the current date and time
+	will be created in the current directory.
+	
+-g	<opts>
+	A list of options for the generation process follows.
+	
+-f	<file>
+	Each line of the file <file> is a set of configuration parameters
+	for the generator.
+	
+-defaults
+	Prints the defaults of the generation process to standard output.
+	
+The available parameters steering the generation process are defined
+as key-value-pairs of the form:
+
+	key=value
+
+If a value may be a string type, you may also use white spaces. 
+In this case enclose the string in quotation marks.
+Probabilities always have to be in the interval [0,1].
+
+The available keys follow:
+
+n	
+[positive integer]
+	The initial number of nodes.
+	The initial instance shall not contain less nodes 
+	than clusters.
+	
+p_in
+[double]
+	Uniform intra-cluster edge probability.
+	
+deg_in
+[positive integer]
+	Uniform intra-cluster degree.
+	
+p_in_list
+[list of double]
+	The list of intra-cluster edge probabilities.
+	The size of the list must be consistent with
+	cl_sizes / k.
+	
+deg_in_list
+[list of positive integer]
+	The list of expected intra-cluster degrees.
+	If the expected degree is larger than the
+	maximum expected size of a cluster,
+	the value will be cut down accordingly.
+	The size of the list must be consistent with
+	cl_sizes / k.
+	
+p_out
+[double]
+	Inter-cluster edge probability.
+
+deg_out
+[positive integer]
+	Expected inter-cluster degree of a node.
+	Will be cut down if the degree exceeds the maxmimum
+	number of possible inter-cluster edges. 
+
+k
+[positive integer]
+	The initial number of clusters.
+	
+cl_sizes
+[list of double]
+	The relative sizes of the clusters (if n is used)
+	or the number of nodes for each cluster (else).
+	The size of the list must be consistent with
+	cl_sizes / k.
+	
+t_max
+[positive integer]
+	The number of time steps.
+
+p_chi
+[double]
+	the probability of edge operation compared to node operation
+	
+p_nu
+[double]
+	the probability of node insertion compared to node deletion
+	
+p_mu
+[double]
+	the probability of cluster operation
+	
+p_omega
+[double]
+	the probability of merge operation compared to split operation
+
+theta
+[double]
+	the threshold  in the range [0,1] for considering 
+	cluster operations complete
+	
+eta
+[positive integer]
+	batch size
+	
+p_in_new
+[GAUSSIAN,MEAN]
+	the method for deriving new p_in values from old ones.
+	
+dir
+[directory name]
+	the name of the output directory
+
+output
+[file name]
+	the name of the output file relative to the output directory
+	
+binary
+[true,false]
+	toggles output file generation. Is enabled by default
+	but may be switched off when testing performance.
+	
+map_type
+[hashmap,treemap]
+	sets the map type being used for the virtual Fisher-Yates shuffle.
+
+Examples:
+
+The most simple call - apart from requesting help - is
+querying the default values:
+
+	./ldcrgen.sh -defaults
+	
+A small graph instance is generated with
+
+	./ldcrgen.sh -g
+	
+In order to see progress information, the -vv switch may be used:
+
+	./ldcrgen.sh -vv -g
+
+Contact information:
+
+	Author:	Roland Kluge
+	Mail:	roland.kluge@gmx.de
+	Date:	23 July 2011
+	SVN:	2897
