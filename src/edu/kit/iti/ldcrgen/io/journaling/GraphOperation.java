@@ -2,21 +2,26 @@ package edu.kit.iti.ldcrgen.io.journaling;
 
 public class GraphOperation
 {
-	static enum OpType
+	public static enum OpType
 	{
-		CreateNode(1, "CREATE_NODE"), RemoveNode(2, "REMOVE_NODE"), //
-		CreateEdge(3, "CREATE_EDGE"), RemoveEdge(4, "REMOVE_EDGE"), //
-		SetCluster(5, "SET_CLUSTER"), SetRefCluster(6, "SET_REF_CLUSTER"), //
-		NextStep(7, "NEXT_STEP");
+		CreateNode(1, "CREATE_NODE", "Arg0: cluster C, Arg1: cluster Cref"), //
+		RemoveNode(2, "REMOVE_NODE", "Arg0: node index"), //
+		CreateEdge(3, "CREATE_EDGE", "Arg0: node u; Arg1: node v"),  //
+		RemoveEdge(4, "REMOVE_EDGE", "Arg0: node u; Arg1: node v"), //
+		SetCluster(5, "SET_CLUSTER", "Arg0: node u; Arg1: cluster C"),
+		SetRefCluster(6, "SET_REF_CLUSTER", "Arg0: node u; Arg1: cluster C"), //
+		NextStep(7, "NEXT_STEP", "");
 
 
-		final byte opcode;
-		final String description;
+		public final byte opcode;
+		public final String label;
+		public final String documentation;
 
-		private OpType(final int opcode, final String description)
+		private OpType(final int opcode, final String label, final String documentation)
 		{
 			this.opcode = (byte) opcode;
-			this.description = description;
+			this.label = label;
+			this.documentation = documentation;
 		}
 
 		byte getOpCode()
@@ -27,7 +32,7 @@ public class GraphOperation
 		@Override
 		public String toString()
 		{
-			return this.description;
+			return this.label;
 		}
 	};
 

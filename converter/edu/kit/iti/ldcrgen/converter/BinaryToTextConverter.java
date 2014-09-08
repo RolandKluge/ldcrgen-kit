@@ -66,15 +66,19 @@ public class BinaryToTextConverter
 		 * Print journals to console
 		 */
 		System.out.println("Graph Journal:");
+		int graphOpCounter = 1;
 		for (final GraphOperation op : gJournal)
 		{
-			System.out.println(op.type + " " + op.arg0 + " " + op.arg1 + " " + op.arg2);
+			System.out.println("#" + graphOpCounter + ": " + op.type + " " + op.arg0 + " " + op.arg1 + " " + op.arg2 + "\t\t" + op.type.documentation);
+			graphOpCounter++;
 		}
 
 		System.out.println("Clustering Journal:");
+		int clusterOpCounter = 1;
 		for (final ClusteringOperation op : clJournal)
 		{
-			System.out.println(op.type + " " + op.arg0 + " " + op.arg1 + " " + op.arg2);
+			System.out.println("#" + clusterOpCounter + ": " + op.type + " " + op.arg0 + " " + op.arg1 + " " + op.arg2 + "\t\t" + op.type.documentation);
+			clusterOpCounter++;
 		}
 	}
 }

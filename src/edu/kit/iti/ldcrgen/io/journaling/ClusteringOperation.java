@@ -3,17 +3,23 @@ package edu.kit.iti.ldcrgen.io.journaling;
 public class ClusteringOperation
 {
 
-	static enum OpType
+	public static enum OpType
 	{
-		NextStep(0, "NEXT_STEP"), Merge(1, "MERGE"), Split(2, "SPLIT"), MergeDone(3, "MERGE_DONE"), SplitDone(4, "SPLIT_DONE");
+		NextStep(0, "NEXT_STEP", "-"), //
+		Merge(1, "MERGE", "Arg0/1: old clusters C1/C2; Arg2: new cluster C3"), //
+		Split(2, "SPLIT", "Arg0: old cluster C1; Arg1/2: new clusters C2/C3"), //
+		MergeDone(3, "MERGE_DONE", "Arg0/1: old clusters C1/C2; Arg2: new cluster C3"), //
+		SplitDone(4, "SPLIT_DONE", "Arg0: old cluster C1; Arg1/2: new clusters C2/C3");
 
-		final byte opcode;
-		final String description;
+		public final byte opcode;
+		public final String label;
+		public final String documentation;
 
-		private OpType(final int opcode, final String description)
+		private OpType(final int opcode, final String label, final String documentation)
 		{
 			this.opcode = (byte)opcode;
-			this.description = description;
+			this.label = label;
+			this.documentation = documentation;
 		}
 
 		byte getOpCode()
@@ -24,7 +30,7 @@ public class ClusteringOperation
 		@Override
 		public String toString()
 		{
-			return this.description;
+			return this.label;
 		}
 	};
 
