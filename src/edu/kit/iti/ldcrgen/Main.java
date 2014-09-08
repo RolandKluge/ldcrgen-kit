@@ -13,9 +13,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import edu.kit.iti.ldcrgen.control.Generator;
 import edu.kit.iti.ldcrgen.data_structures.DCRGraph;
 import edu.kit.iti.ldcrgen.io.CommandLineArguments;
@@ -45,7 +42,6 @@ public class Main
 	private static String preRenderedDateTime = null;
 	private static String preRenderedTime = null;
 
-	private static Log log = LogFactory.getLog("LDCR");
 
 	/**
 	 * Starts the generator.

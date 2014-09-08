@@ -139,6 +139,7 @@ public class CommandLineArguments
 			++currentLine;
 		}
 
+		scanner.close();
 		return result;
 	}
 
@@ -666,6 +667,7 @@ public class CommandLineArguments
 			getClass().getClassLoader().getResourceAsStream("help.txt"));
 		while (scanner.hasNextLine())
 			System.out.println(scanner.nextLine());
+		scanner.close();
 	}
 
 	public static CommandLineArguments getDefaults()
