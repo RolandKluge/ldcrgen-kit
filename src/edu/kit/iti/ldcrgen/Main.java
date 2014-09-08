@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -34,7 +35,7 @@ import edu.kit.iti.ldcrgen.io.journaling.GraphJournal;
 public class Main
 {
 	private static final DateFormat DATE_TIME_INSTANCE = DateFormat.getDateTimeInstance(
-		DateFormat.SHORT, DateFormat.MEDIUM);
+		DateFormat.SHORT, DateFormat.MEDIUM, Locale.GERMANY);
 	private static final DateFormat TIME_INSTANCE = DateFormat.getTimeInstance(DateFormat.MEDIUM);
 	private static PrintStream logStream = null;
 	private static boolean loggingEnabled = false;
