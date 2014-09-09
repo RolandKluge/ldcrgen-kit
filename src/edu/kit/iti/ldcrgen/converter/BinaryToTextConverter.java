@@ -11,6 +11,7 @@ import edu.kit.iti.ldcrgen.io.journaling.ClusteringOperation;
 import edu.kit.iti.ldcrgen.io.journaling.GraphJournal;
 import edu.kit.iti.ldcrgen.io.journaling.GraphOperation;
 
+
 /**
  * Converts the binary GraphJ format into an informal textual
  * representation.

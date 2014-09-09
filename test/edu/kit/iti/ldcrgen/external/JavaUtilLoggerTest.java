@@ -1,4 +1,4 @@
-package misc;
+package edu.kit.iti.ldcrgen.external;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

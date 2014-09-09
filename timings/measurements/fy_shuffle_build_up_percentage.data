@@ -1,9 +1,0 @@
-# First column: % filled
-# Second column: time in milliseconds
-# Shuffle size: 1.0E7
-filled ms
-10 2133.0
-20 4364.333333333333
-30 6594.666666666667
-40 9150.0
-50 9926.333333333334
