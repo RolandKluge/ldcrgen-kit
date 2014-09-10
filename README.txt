@@ -1,19 +1,4 @@
-This file gives an overview of the delivered contents:
-
-- The directory 'thesis' contains my Bachelor's thesis.
-	It describes the concepts of the generator and contains a easy-to-read
-	user manual for the generator.
-
-- The directory 'sources' contains the source code of the generator.
-	The subdirectories:
-	* 'main' is the actual source code of the generator.
-	* 'test' contains JUnit tests.
-		For more information see http://junit.org/.
-	* 'contracts' contains so-called contracts for certain classes.
-		They are written for the Design by Contract (DbC) framework C4J;
-		for more information see http://c4j.sourceforge.net/.
-	
-	Neither the unit tests nor the contracts are contained in the the JAR file.
+The following files serve for starting the graph generator.
 
 - 'ldcrgen.bat' is a batch script for Windows. 
 	Try calling 'ldcrgen.bat -h' for help.
@@ -26,6 +11,8 @@ This file gives an overview of the delivered contents:
 
 - 'version.txt' contains the exact revision of the files and may be 
 	useful for debugging.
+
+The command-line help (available via option -h/--help) can also be found under resources/help.txt.
 
 If you encounter problems, please contact me via e-mail:
 
