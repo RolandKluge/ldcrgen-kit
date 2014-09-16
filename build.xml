@@ -122,14 +122,7 @@
 			<tarfileset dir="${deploy.dir}/${ant.project.name}">
 				<include name="*.*"/>
 			</tarfileset>
-		</tar>
-
-		<echo>
-!!!!! !!!!! !!!!!
-DO NOT FORGET thesis.pdf
-!!!!! !!!!! !!!!!
-		</echo>
-		
+		</tar>		
 	</target>
 	
 	<!-- 
