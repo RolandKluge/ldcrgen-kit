@@ -2,6 +2,7 @@
 	
 	<property name="src.dir"     value="src"/>
 	<property name="tests.dir"   value="test"/>
+	<property name="resources.dir"  value="resources"/>
 	<property name="lib.dir"     value="lib"/>
 	
 	<property name="build.dir"   value="build"/>
@@ -11,6 +12,7 @@
 	<property name="report.dir"  value="${build.dir}/junitreport"/>
 	<property name="doxygen.dir"  value="${build.dir}/doxygen"/>
 	<property name="javadoc.dir"  value="${build.dir}/javadoc"/>
+	
 	
 	<property name="main-class"  value="edu.kit.iti.ldcrgen.Main"/>
 	
@@ -31,7 +33,7 @@
 			author ="true"
 			version="true"
 			windowtitle="LCDR Generator"
-			classpath="./lib/c4j.jar:./lib/junit-4.9b2.jar"
+			classpath="./lib/c4j.jar:./lib/junit-4.9b2.jar:./lib/log4j-1.2.17.jar"
 			link="http://download.oracle.com/javase/6/docs/api"
 			>
 				<fileset dir="${src.dir}"/>
@@ -44,6 +46,9 @@
 		<copy todir="${classes.dir}">
 			<fileset dir="${src.dir}" excludes="**/*.java,**/*.html"/>
 		</copy>
+		<copy todir="${classes.dir}">
+			<fileset dir="${resources.dir}"/>
+		</copy>
 	</target>
 	
 	<target name="compile">
@@ -53,78 +58,24 @@
 		<javac srcdir="${tests.dir}" destdir="${classes.dir}" classpathref="classpath" includeantruntime="false"
 	           debug="on" debuglevel="lines,vars,source"/>
 		<antcall target="copy-resources"/>
-		<antcall target="version-information"/>
 	</target>
 	
+	<!--
+	 - Builds a runnable jar file
+	 -->
 	<target name="jar" depends="compile">
-		
-		<!--<delete dir="${jar.dir}"/>
-		<mkdir dir="${jar.dir}"/>-->
-		
+				
 		<jar destfile="${jar.dir}/${ant.project.name}.jar">
 			<manifest>
 				<attribute name="Main-Class" value="${main-class}"/>
 			</manifest>
 			<fileset 	dir="${classes.dir}"
 						excludes="**/*.html,**/*Test.class,**/*Contract.class"
-			/><!--,**/*Test.class,**/*Contract.class -->
+			/>
 			<fileset file="help.txt" />
 		</jar>
 	</target>
-	
-	<target name="deploy" depends="jar">
 		
-		<delete dir="${deploy.dir}"/>
-		<mkdir dir="${deploy.dir}/${ant.project.name}"/>
-		<mkdir dir="${deploy.dir}/cd"/>
-		<mkdir dir="${deploy.dir}/cd/sources"/>
-		<mkdir dir="${deploy.dir}/cd/thesis"/>
-		
-		<copy todir="${deploy.dir}/${ant.project.name}" flatten="true">
-			<resources>
-                <file file="./version.txt"/>
-				<file file="./${ant.project.name}.sh"/>
-				<file file="./${ant.project.name}.bat"/>
-				<file file="${jar.dir}/${ant.project.name}.jar"/>
-			</resources>
-		</copy>
-		
-		<copy todir="${deploy.dir}/cd" flatten="true">
-			<resources>
-				<file file="./version.txt"/>
-				<file file="./README.txt"/>
-				<file file="./${ant.project.name}.sh"/>
-				<file file="./${ant.project.name}.bat"/>
-				<file file="${jar.dir}/${ant.project.name}.jar"/>
-			</resources>
-		</copy>
-		
-		<exec executable="svn">
-			<arg value="export"/>
-			<arg value="${src.dir}"/>
-			<arg value="${deploy.dir}/cd/sources/main"/>
-		</exec>
-
-		<exec executable="svn">
-			<arg value="export"/>
-			<arg value="${src.dir}"/>
-			<arg value="${deploy.dir}/cd/sources/test"/>
-		</exec>
-
-		<exec executable="svn">
-			<arg value="export"/>
-			<arg value="${src.dir}"/>
-			<arg value="${deploy.dir}/cd/sources/contracts"/>
-		</exec>
-		
-		<tar destfile="${deploy.dir}/${ant.project.name}.tar.gz"
-			compression="gzip">
-			<tarfileset dir="${deploy.dir}/${ant.project.name}">
-				<include name="*.*"/>
-			</tarfileset>
-		</tar>		
-	</target>
-	
 	<!-- 
 		Runs the generator in the jar directory. 
 		Logfiles go to this directory, too. 
@@ -163,11 +114,7 @@
 			<report todir="${report.dir}"/>
 		</junitreport>
 	</target>
-	
-	<target name="version-information">
-		<exec executable="./create_version_information.sh"/>
-	</target>
-	
+		
 	<target name="clean-build" depends="clean,jar"/>
 	
 	<!--

@@ -175,4 +175,3 @@ Contact information:
 	Author:	Roland Kluge
 	Mail:	roland.kluge@gmx.de
 	Date:	23 July 2011
-	SVN:	2897
