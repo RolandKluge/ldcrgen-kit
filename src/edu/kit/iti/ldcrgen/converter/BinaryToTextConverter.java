@@ -1,9 +1,14 @@
 package edu.kit.iti.ldcrgen.converter;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
+
+import org.apache.commons.io.IOUtils;
 
 import edu.kit.iti.ldcrgen.io.GraphJReader;
 import edu.kit.iti.ldcrgen.io.journaling.ClusteringJournal;
@@ -70,7 +75,8 @@ public class BinaryToTextConverter
 		int graphOpCounter = 1;
 		for (final GraphOperation op : gJournal)
 		{
-			System.out.println("#" + graphOpCounter + ": " + op.type + " " + op.arg0 + " " + op.arg1 + " " + op.arg2 + "\t\t" + op.type.documentation);
+			System.out.println("#" + graphOpCounter + ": " + op.type + " " + op.arg0 + " " + op.arg1
+				+ " " + op.arg2 + "\t\t" + op.type.documentation);
 			graphOpCounter++;
 		}
 
@@ -78,116 +84,129 @@ public class BinaryToTextConverter
 		int clusterOpCounter = 1;
 		for (final ClusteringOperation op : clJournal)
 		{
-			System.out.println("#" + clusterOpCounter + ": " + op.type + " " + op.arg0 + " " + op.arg1 + " " + op.arg2 + "\t\t" + op.type.documentation);
+			System.out.println("#" + clusterOpCounter + ": " + op.type + " " + op.arg0 + " "
+				+ op.arg1 + " " + op.arg2 + "\t\t" + op.type.documentation);
 			clusterOpCounter++;
 		}
 	}
-	
-	 /**
-	 * Converts the given binary file (first argument) into a  text file.
-	 *  graphj_path: the binary file 
-	 *  nodesPath: A text file which contains names of the nodes
-	 *  netPath: A text file which contains the network
-	 *  changeLog: A text file which contains the stream of atomic changes
+
+	/**
+	 * Converts the given binary file (first argument) into a text file.
+	 *
+	 * @param graphJPath
+	 *            the binary input file
+	 * @param nodeNamesPath
+	 *            A text file which contains names of the nodes
+	 * @param networkPath
+	 *            A text file which contains the network
+	 * @param deltaStreamPath
+	 *            A text file which contains the stream of atomic changes
 	 */
-	public static void ConvertGraphjToText(string graphj_path, string nodesPath, string netPath, string changeLog)
+	public static void convertGraphJToText(final String graphJPath, final String nodeNamesPath,
+		final String networkPath, final String deltaStreamPath)
 	{
-		
-		
+
+
 		BufferedInputStream fstream = null;
 		try
 		{
-			fstream = new BufferedInputStream(new FileInputStream(graphj_path));
+			fstream = new BufferedInputStream(new FileInputStream(graphJPath));
 		}
 		catch (final FileNotFoundException e)
 		{
 			e.printStackTrace();
+			return;
 		}
 
 		final GraphJournal gJournal = GraphJReader.readGraphJournal(fstream);
-		final ClusteringJournal clJournal = GraphJReader.readClusteringJournal(fstream);
+		// final ClusteringJournal clJournal =
+		// GraphJReader.readClusteringJournal(fstream);
 
-		if (null != fstream)
-		{
-			try
-			{
-				fstream.close();
-			}
-			catch (final IOException e)
-			{
-				e.printStackTrace();
-			}
-		}
+		IOUtils.closeQuietly(fstream);
 
 
-		int graphOpCounter = 1;
-		int node_id = 1;
-		boolean sw = true;
+		int nodeId = 1;
+		boolean useSimpleFormat = true;
+
+		BufferedWriter nodeNameWriter = null;
+		BufferedWriter networkWriter = null;
+		BufferedWriter deltaStreamWriter = null;
+
 		try
 		{
-			File file_nodes = new File(nodesPath);
-			FileWriter fw_nodes = new FileWriter(file_nodes.getAbsoluteFile());
-			BufferedWriter bw_nodes = new BufferedWriter(fw_nodes);
-			
-			File file_net = new File(netPath);
-			FileWriter fw_net = new FileWriter(file_net.getAbsoluteFile());
-			BufferedWriter bw_net = new BufferedWriter(fw_net);
-			
-			File file_change = new File(changeLog);
-			FileWriter fw_change = new FileWriter(file_change.getAbsoluteFile());
-			BufferedWriter bw_change = new BufferedWriter(fw_change);
-			
-			
+			nodeNameWriter = new BufferedWriter(
+				new FileWriter(new File(nodeNamesPath).getAbsoluteFile()));
+			networkWriter = new BufferedWriter(
+				new FileWriter(new File(networkPath).getAbsoluteFile()));
+			deltaStreamWriter = new BufferedWriter(
+				new FileWriter(new File(deltaStreamPath).getAbsoluteFile()));
+
+
 			for (final GraphOperation op : gJournal)
 			{
-				
-				switch(op.type)
+
+				switch (op.type)
 				{
 					case CreateNode:
-						if(sw){
-							bw_nodes.write(node_id + " " + op.arg0 + "\n");
-							node_id++;
+						if (useSimpleFormat)
+						{
+							nodeNameWriter.write(nodeId + " " + op.arg0 + "\n");
+							nodeId++;
 						}
-						else{
-							bw_change.write("ADD NODE" + "\n" +node_id + " " + op.arg0 + "\n");
-							node_id++;
+						else
+						{
+							deltaStreamWriter
+								.write("ADD NODE" + "\n" + nodeId + " " + op.arg0 + "\n");
+							nodeId++;
 						}
-							
-						break;
-						
-						
-					case CreateEdge:
-						if(sw) bw_net.write(op.arg0 + " " + op.arg1 + "\n");
-						else bw_change.write("ADD EDGE" + "\n" + op.arg0 + " " + op.arg1 + "\n"); 
-						break;
-						
-					case NextStep:
-						sw = false;
-						bw_change.write("NEXT STEP"+"\n"); 
-						break;
-					
 
-					
-					case RemoveEdge:
-						bw_change.write("REMOVE EDGE" + "\n" + op.arg0 + " " + op.arg1 + "\n");
-						break;	
-						
-					case RemoveNode:
-						bw_change.write("REMOVE NODE" + "\n" + op.arg0 + " " + op.arg1 + "\n");
 						break;
-						
+
+
+					case CreateEdge:
+						if (useSimpleFormat)
+						{
+							networkWriter.write(op.arg0 + " " + op.arg1 + "\n");
+						}
+						else
+						{
+							deltaStreamWriter
+								.write("ADD EDGE" + "\n" + op.arg0 + " " + op.arg1 + "\n");
+						}
+						break;
+
+					case NextStep:
+						useSimpleFormat = false;
+						deltaStreamWriter.write("NEXT STEP" + "\n");
+						break;
+
+
+
+					case RemoveEdge:
+						deltaStreamWriter
+							.write("REMOVE EDGE" + "\n" + op.arg0 + " " + op.arg1 + "\n");
+						break;
+
+					case RemoveNode:
+						deltaStreamWriter
+							.write("REMOVE NODE" + "\n" + op.arg0 + " " + op.arg1 + "\n");
+						break;
+					default:
+						break;
+
 				}
-				
-				graphOpCounter++;
+
 			}
-			
-			bw_change.close();
-			bw_net.close();
-			bw_nodes.close();
 		}
 		catch (final IOException e)
 		{
 			e.printStackTrace();
+		}
+		finally
+		{
+			IOUtils.closeQuietly(nodeNameWriter);
+			IOUtils.closeQuietly(networkWriter);
+			IOUtils.closeQuietly(nodeNameWriter);
 		}
 	}
 }

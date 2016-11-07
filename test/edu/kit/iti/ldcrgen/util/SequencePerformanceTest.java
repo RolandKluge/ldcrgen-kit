@@ -6,8 +6,6 @@ import java.io.PrintStream;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import edu.kit.iti.ldcrgen.util.Sequences;
-
 public class SequencePerformanceTest
 {
 	@Ignore
@@ -64,5 +62,6 @@ public class SequencePerformanceTest
 					prob + " " + //
 					(double) size);
 		}
+		writer.close();
 	}
 }

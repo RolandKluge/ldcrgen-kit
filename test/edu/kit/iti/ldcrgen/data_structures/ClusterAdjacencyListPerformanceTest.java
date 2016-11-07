@@ -55,6 +55,7 @@ public class ClusterAdjacencyListPerformanceTest
 			}
 			writer.println(size + " " + (endTime - startTime) / (double) numRuns);
 		}
+		writer.close();
 	}
 
 	@Test

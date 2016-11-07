@@ -124,6 +124,7 @@ public class FisherYatesShufflePerformanceTest
 			writer.println(q + " " + (endTime - startTime) / (double) numRuns);
 
 		}
+		writer.close();
 	}
 
 	/**

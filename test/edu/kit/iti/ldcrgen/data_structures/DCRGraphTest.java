@@ -695,7 +695,6 @@ public class DCRGraphTest
 			nodes.add(node);
 			graph.addNode(node, cl);
 		}
-		@SuppressWarnings("unchecked")
 		final List<Pair<Integer>> edges =
 			Arrays.asList(
 				new Pair<Integer>(0, 1),//
