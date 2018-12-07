@@ -24,5 +24,5 @@ The command-line help (available via option -h/--help) can also be found under r
 
 If you encounter problems, feel free to contact me via e-mail:
 
-	roland.kluge@gmx.de
+	roland.kluge _at_ gmx.de
 
